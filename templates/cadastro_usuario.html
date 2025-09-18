@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'componente/mensagem.html'   %}
     <h1 class="pageTitle">Cadastro de Usuário</h1>
+    {% include 'componente/mensagem.html'   %}
     <form class="form" action="{{ url_for('cadastro_usuario') }}" method="post">
         <label for="nome">Nome</label>
         <input type="text" id="nome" name="nome" required placeholder="Qual o nome?">

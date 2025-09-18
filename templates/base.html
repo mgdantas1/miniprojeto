@@ -19,8 +19,15 @@
 <body>
     <nav>
         <ul class="links">
-            <li><a href="{{ url_for('cadastro_usuario') }}">Cadastrar usuário</a></li>
-            <li><a href="{{ url_for('login') }}">Login de usuário</a></li>
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('index') }}">Início</a></li>
+                <li><a href="{{ url_for('listar_produto') }}">Produtos</a></li>
+                <li><a href="{{ url_for('cadastro_produto') }}">Cadastrar Produto</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('cadastro_usuario') }}">Cadastrar usuário</a></li>
+                <li><a href="{{ url_for('login') }}">Login de usuário</a></li>
+            {% endif %}
         </ul>
     </nav>
     <main>

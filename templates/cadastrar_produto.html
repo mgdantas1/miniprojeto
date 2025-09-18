@@ -5,13 +5,15 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{{url_for('cadastro_produto')}}" method="post">
+    <h1 class="pageTitle">Cadastrar produto</h1>
+    {% include 'componente/mensagem.html'   %}
+    <form action="{{url_for('cadastro_produto')}}" method="post" class="form">
         <label for="nome">Nome</label>
         <input type="text" name="nome" placeholder="nome">
         <label for="preco">Preço</label>
         <input type="number" name="preco" preco="preco">
         <label for="descricao">Descricao</label>
-        <input type="textarea" name="descricao" placeholder="descricao">
+        <textarea name="descricao" placeholder="Escreva algo..."></textarea>
         <button>Enviar</button>
     </form>
 {% endblock %}

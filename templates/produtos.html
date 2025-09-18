@@ -4,7 +4,19 @@
     Produtos
 {% endblock %}
 
-{% block conteudo %}
-    {% include 'component/mensagem.html'   %}
-    olá
+{% block content %}
+    <h1 class="pageTitle">Produtos</h1>
+    {% include 'componente/mensagem.html'   %}
+    {% if produtos %}
+        {% for prod in produtos %}
+            <div class="prod">
+                <h2>{{prod.pro_nome}}</h2>
+                <h3>R${{prod.pro_preco}}</h3>
+                <p>{{prod.pro_descricao}}</p>
+
+                <a href="{{url_for('editar_produto')}}">Editar</a>
+                <a href="{{url_for('excluir_produto', pro_id=prod.pro_id)}}">Excluir</a>
+            </div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

@@ -112,22 +112,41 @@ def cadastro_produto():
 
     return render_template('cadastrar_produto.html')
 
-@app.route('/listar_produto', methods=['GET', 'POST'])
+@app.route('/listar_produto')
+@login_required
 def listar_produto():
-    pass
+    with sessao() as session:
+        produtos = session.query(Produto).all()
+    return render_template('produtos.html', produtos=produtos)
 
 
 @app.route('/editar_produto', methods=['GET', 'POST'])
+@login_required
 def editar_produto():
     pass
 
-@app.route('/excluir_produto', methods=['GET', 'POST'])
+@app.route('/excluir_produto')
+@login_required
 def excluir_produto():
-    pass
+    with sessao() as session:
+        id = request.args.get('pro_id')
+        prod = session.query(Produto).filter_by(pro_usu_id=id).first()
+        if prod.pro_id == current_user.id:
+            session.delete(prod)
+            session.commit()
+            flash('Produto removido com sucesso!', category='sucesso')
+            return redirect(url_for('listar_produto'))
+        flash('O produto não pode ser removido', category='erro')
+        return redirect(url_for('listar_produto'))
+
+
+
 
 @app.route('/logout')
+@login_required
 def logout():
-    pass
+    logout_user()
+    return redirect(url_for('index'))
 
 
 
