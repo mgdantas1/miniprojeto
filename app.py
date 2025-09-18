@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect, url_for, render_template, flash
 from sqlalchemy import create_engine, String, ForeignKey
-from sqlalchemy.orm import DeclarativeBase, Session, Mapped, mapped_column, relationship
-from flask_login import UserMixin, login_manager, LoginManager, login_user, logout_user, login_required
+from sqlalchemy.orm import DeclarativeBase, sessionmaker, Mapped, mapped_column, relationship
+from flask_login import UserMixin, login_manager, LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 login_manager = LoginManager()
@@ -9,22 +9,25 @@ app = Flask(__name__)
 login_manager.__init__(app)
 app.secret_key = 'Esconda-me'
 
-engine =create_engine('sqlite:///banco.db')
+engine = create_engine('sqlite:///banco.db')
 
-sessao = Session(bind=engine)
+sessao = sessionmaker(bind=engine)
 
 class Base(DeclarativeBase):
     pass
 
 
-class Usuario(Base):
+class Usuario(UserMixin, Base):
     __tablename__ = 'tb_usuario'
 
-    usu_id:Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id:Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     usu_nome:Mapped[str] = mapped_column(String(100))
     usu_email:Mapped[str] = mapped_column(String(100))
     usu_senha:Mapped[str] = mapped_column(String(130))
-
+    
+    def get_id(self):
+        return str(self.id)
+    
     produtos = relationship('Produto', back_populates='usuario')
 
 class Produto(Base):
@@ -34,22 +37,18 @@ class Produto(Base):
     pro_nome:Mapped[str] = mapped_column(String(100))
     pro_preco:Mapped[float] = mapped_column()
     pro_descricao:Mapped[str] = mapped_column()
-    pro_usu_id:Mapped[int] = mapped_column(ForeignKey('tb_usuario.usu_id'))
+    pro_usu_id:Mapped[int] = mapped_column(ForeignKey('tb_usuario.id'))
 
     usuario = relationship('Usuario', back_populates='produtos')
 
 
-    def get_id(self):
-        return str(self.id)
-Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(engine)
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    session = Session()
-    user = session.query(Usuario).get(int(user_id))
-    session.close()
-    return user
+    with sessao() as session:
+        return session.get(Usuario, int(user_id))
 
 
 @app.route('/')
@@ -62,14 +61,15 @@ def cadastro_usuario():
         nome = request.form.get('nome')
         email = request.form.get('email')
         senha = request.form.get('senha')
-        with Session(engine) as sessao:
-            exist_usuario = sessao.query(Usuario).filter_by(usu_email=email).first()
+        with sessao() as session:
+            exist_usuario = session.query(Usuario).filter_by(usu_email=email).first()
             print(exist_usuario)
             if not exist_usuario:
                 senha_crip = generate_password_hash(senha)
                 usuario_novo = Usuario(usu_nome=nome, usu_email=email, usu_senha=senha_crip)
-                sessao.add(usuario_novo)
-                sessao.commit()
+                session.add(usuario_novo)
+                session.commit()
+                login_user(usuario_novo)
                 flash('Usuário cadastrado!', category='sucesso')
                 return redirect(url_for('index')) # return temporário
             flash('Já existe usuário cadastrado com esses dados!', category='erro')
@@ -80,8 +80,8 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         senha = request.form.get('senha')
-        with Session(engine) as sessao:
-            exist_usuario = sessao.query(Usuario).filter_by(usu_email=email).first()
+        with sessao() as session:
+            exist_usuario = session.query(Usuario).filter_by(usu_email=email).first()
             print(exist_usuario)
             if exist_usuario and check_password_hash(exist_usuario.usu_senha, senha):
                 login_user(exist_usuario)
@@ -93,7 +93,24 @@ def login():
 @app.route('/cadastro_produto', methods=['GET', 'POST'])
 @login_required
 def cadastro_produto():
-    pass
+    if request.method == 'POST':
+        nome = request.form['nome']
+        preco = request.form['preco']
+        descricao = request.form['descricao']
+        usu_id = current_user.id
+        with sessao() as session:
+            verificar = session.query(Produto).filter_by(pro_nome=nome).first()
+            if not verificar:
+                novo_prod = Produto(pro_nome=nome, pro_preco=preco, pro_descricao=descricao, pro_usu_id=usu_id)
+                session.add(novo_prod)
+                session.commit()
+                flash('Produto cadastrado com sucesso!', category='sucesso')
+                return redirect(url_for('listar_produto'))
+            flash('Produto não pode ser cadastrado!', category='erro')
+            return redirect(url_for('cadastro_produto'))
+            
+
+    return render_template('cadastrar_produto.html')
 
 @app.route('/listar_produto', methods=['GET', 'POST'])
 def listar_produto():
