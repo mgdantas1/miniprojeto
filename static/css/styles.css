@@ -1,0 +1,92 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+    font-family: "Roboto", sans-serif;
+}
+
+nav {
+    display: flex;
+    height: 15vh;
+    width: 100vw;
+    align-items: center;
+    justify-content: left;
+    padding-left: 5vw; padding-right: 5vw;
+}
+
+main {
+    display: flex;
+    height: 85vh;
+    width: 100vw;
+    padding-left: 5vw; padding-right: 5vw;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* eu decidi fazer uma div só pra links caso alguma coisa seja adicionada na nav futuramente e ficar mais organizado*/
+.links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.links li a {
+    text-decoration: none;
+    padding: 10px;
+    color: rgb(0, 0, 100);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.links li a:hover{
+    transform: scale(1.1);
+    background-color: rgb(0, 0, 100);
+    color: white;
+}
+
+.pageTitle {
+    color: rgb(0, 0, 100);
+    border-bottom: 2px solid rgb(0, 0, 100);
+    height: fit-content;
+    width: fit-content;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    align-items: baseline;
+    justify-content: center;
+    gap: 20px;
+}
+
+.form input {
+    padding: 5px;
+    border: 0.5px solid rgb(212, 212, 212);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .212);
+}
+
+.form label {
+    color: rgb(0, 0, 100);
+}
+
+.form button {
+    align-self: center;
+    padding: 5px;
+    width: 100px;
+    height: 30px;
+    border: 0.5px solid rgb(212, 212, 212);
+    background-color: white;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .212);
+    color: rgb(0, 0, 100);
+
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.form button:hover {
+    transform: scale(1.1);
+    background-color: rgb(0, 0, 100);
+    color: white;
+}

@@ -4,10 +4,10 @@
     Cadastro de Usuário
 {% endblock %}
 
-{% block conteudo %}
+{% block content %}
     {% include 'componente/mensagem.html'   %}
-    <h1>Cadastro de Usuário</h1>
-    <form action="{{ url_for('cadastro_usuario') }}" method="post">
+    <h1 class="pageTitle">Cadastro de Usuário</h1>
+    <form class="form" action="{{ url_for('cadastro_usuario') }}" method="post">
         <label for="nome">Nome</label>
         <input type="text" id="nome" name="nome" required placeholder="Qual o nome?">
         <label for="email">Email</label>
