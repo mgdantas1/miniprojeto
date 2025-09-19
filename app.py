@@ -119,11 +119,31 @@ def listar_produto():
         produtos = session.query(Produto).all()
     return render_template('produtos.html', produtos=produtos)
 
-
 @app.route('/editar_produto', methods=['GET', 'POST'])
 @login_required
 def editar_produto():
-    pass
+    id = request.args.get('pro_id')
+    with sessao() as session:
+        produto_editar = session.query(Produto).filter_by(pro_id=id).first()
+        if not produto_editar:
+            flash('Produto não encontrado!', category='erro')
+            return redirect(url_for('listar_produto')) 
+        if produto_editar.pro_usu_id != current_user.id:
+            flash('O produto não pode ser editado!', category='erro')
+            return redirect(url_for('listar_produto')) 
+    if request.method == 'POST':
+        nome = request.form.get('nome')
+        preco = request.form.get('preco')
+        descricao = request.form.get('descricao')
+        with sessao() as session:
+            produto = session.query(Produto).filter_by(pro_id=id).first()
+            produto.pro_nome = nome
+            produto.pro_preco = preco
+            produto.pro_descricao = descricao
+            session.commit()
+        flash('Produto editado com sucesso!', category='sucesso')
+        return redirect(url_for('listar_produto'))
+    return render_template('editar_produto.html', produto_editar = produto_editar)
 
 @app.route('/excluir_produto')
 @login_required

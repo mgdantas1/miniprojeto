@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Editar produto
+{% endblock %}
+
+{% block content %}
+    <h1>Editar produto</h1>
+    <form action="{{ url_for('editar_produto', pro_id=produto_editar.pro_id) }}" method="post">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" name="nome" required value="{{produto_editar.pro_nome}}">
+        <label for="preco">Preço</label>
+        <input type="number" name="preco" id="preco" required value="{{produto_editar.pro_preco}}">
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao" name="descricao">{{ produto_editar.pro_descricao }}</textarea>
+        <button type="submit">Enviar</button>
+    </form>
+{% endblock %}

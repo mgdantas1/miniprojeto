@@ -14,7 +14,7 @@
                 <h3>R${{prod.pro_preco}}</h3>
                 <p>{{prod.pro_descricao}}</p>
 
-                <a href="{{url_for('editar_produto')}}">Editar</a>
+                <a href="{{url_for('editar_produto', pro_id=prod.pro_id)}}">Editar</a>
                 <a href="{{url_for('excluir_produto', pro_id=prod.pro_id)}}">Excluir</a>
             </div>
         {% endfor %}
