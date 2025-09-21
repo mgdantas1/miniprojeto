@@ -6,6 +6,7 @@
 
 {% block content %}
     <h1 class="pageTitle">Bem-vindo ao Catálogo Web</h1> 
+    {% include 'componente/mensagem.html'   %}
     <p>Organize e gerencie seus produtos de forma prática e rápida.</p>
     <div class="sobre">
         <img src="static/media/livrinho_azul.png" alt="">
@@ -13,5 +14,4 @@
         Com ele, você pode cadastrar, editar, visualizar e excluir itens de forma rápida e eficiente.
         Nosso objetivo é facilitar o gerenciamento de informações, trazendo clareza e agilidade para o seu dia a dia.</p>
     </div>
-    {% include 'componente/mensagem.html'   %}
 {% endblock %}

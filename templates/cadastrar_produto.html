@@ -9,11 +9,11 @@
     {% include 'componente/mensagem.html'   %}
     <form action="{{url_for('cadastro_produto')}}" method="post" class="form">
         <label for="nome">Nome</label>
-        <input type="text" name="nome" placeholder="nome">
+        <input type="text" name="nome" placeholder="nome" required>
         <label for="preco">Preço</label>
-        <input type="number" name="preco" preco="preco">
+        <input type="number" name="preco" placeholder="preço" step="any" required>
         <label for="descricao">Descricao</label>
-        <textarea name="descricao" placeholder="Escreva algo..."></textarea>
+        <textarea name="descricao" placeholder="Escreva algo..." required></textarea>
         <button>Enviar</button>
     </form>
 {% endblock %}
