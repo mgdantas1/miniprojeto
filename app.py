@@ -195,13 +195,13 @@ def editar_produto():
 def excluir_produto():
     with sessao() as session:
         id = request.args.get('pro_id')
-        prod = session.query(Produto).filter_by(pro_usu_id=id).first()
-        if prod.pro_id == current_user.id:
+        prod = session.query(Produto).filter_by(pro_id=id).first()
+        if prod.pro_usu_id == current_user.id:
             session.delete(prod)
             session.commit()
             flash('Produto removido com sucesso!', category='sucesso')
             return redirect(url_for('listar_produto'))
-        flash('O produto não pode ser removido', category='erro')
+        flash('O produto não pode ser removido!', category='erro')
         return redirect(url_for('listar_produto'))
 
 
