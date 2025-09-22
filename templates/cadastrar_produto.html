@@ -7,11 +7,15 @@
 {% block content %}
     <h1 class="pageTitle">Cadastrar produto</h1>
     {% include 'componente/mensagem.html'   %}
-    <form action="{{url_for('cadastro_produto')}}" method="post" class="form">
+    <form action="{{url_for('cadastro_produto')}}" method="post" class="form" enctype="multipart/form-data">
         <label for="nome">Nome</label>
         <input type="text" name="nome" placeholder="nome" required>
         <label for="preco">Preço</label>
         <input type="number" name="preco" placeholder="preço" step="any" required>
+
+        <label for="imagem">Imagem</label>
+        <input type="file" name="imagem" placeholder="Imagem" accept="image/*" step="any" required>
+        
         <label for="descricao">Descricao</label>
         <textarea name="descricao" placeholder="Escreva algo..." required></textarea>
         <button>Enviar</button>

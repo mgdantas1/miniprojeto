@@ -10,12 +10,16 @@
     {% if produtos %}
         {% for prod in produtos %}
             <div class="prod">
-                <h2>{{prod.pro_nome}}</h2>
-                <h3>R${{prod.pro_preco}}</h3>
-                <p>{{prod.pro_descricao}}</p>
-
-                <a href="{{url_for('editar_produto', pro_id=prod.pro_id)}}">Editar</a>
-                <a href="{{url_for('excluir_produto', pro_id=prod.pro_id)}}">Excluir</a>
+                <div class="imagem">
+                    <img src="{{ url_for('static', filename='pro_imagens/' + prod.pro_imagem_url) }}" alt="" class="produtoImagem">
+                </div>   
+                <div class="infoProd">            
+                    <h2>{{prod.pro_nome}}</h2>
+                    <h3>R${{prod.pro_preco}}0</h3>
+                    <p>{{prod.pro_descricao}}</p>
+                    <a href="{{url_for('editar_produto', pro_id=prod.pro_id)}}">Editar</a>
+                    <a href="{{url_for('excluir_produto', pro_id=prod.pro_id)}}">Excluir</a>
+                </div>
             </div>
         {% endfor %}
     {% endif %}
