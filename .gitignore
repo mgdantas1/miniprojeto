@@ -1,4 +1,5 @@
 env/
 __pycache__/
 banco.db
-pro_imagens/
+pro_imagens/*
+!pro_imagens/.gitkeep
