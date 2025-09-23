@@ -20,7 +20,7 @@
     <nav>
         <ul class="links">
             {% if current_user.is_authenticated %}
-                <li><a href="{{ url_for('index') }}">Início</a></li>
+                <li id="img"><a href="{{ url_for('index') }}"><img src="../static/media/logo_branca.png" alt=""></a></li>
                 <li><a href="{{ url_for('listar_produto') }}">Produtos</a></li>
                 <li><a href="{{ url_for('cadastro_produto') }}">Cadastrar Produto</a></li>
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
